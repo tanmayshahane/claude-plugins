@@ -308,7 +308,7 @@ def budget_status(cfg, state, usage):
 def fmt(detail):
     c, l = detail["consumed"], detail["limits"]
     return (
-        f"weekly {c['weekly']:.1f}%/{l['weekly']:.1f}% · "
+        f"weekly {c['weekly']:.1f}%/{l['weekly']:.1f}% | "
         f"5h-window {c['session']:.1f}%/{l['session']:.1f}% "
         f"(source: {detail['raw']['source']})"
     )
@@ -391,8 +391,8 @@ def handle_session_start(cfg, session_id):
         save_state(session_id, state)
         msg = (
             f"[session-budget] Budget active for this session: "
-            f"≤{cfg['weekly_pct_limit']:.0f}% of weekly quota, "
-            f"≤{cfg['session_pct_limit']:.0f}% of the 5h window. "
+            f"<={cfg['weekly_pct_limit']:.0f}% of weekly quota, "
+            f"<={cfg['session_pct_limit']:.0f}% of the 5h window. "
             f"Plan usage now: weekly {usage['weekly_pct']:.1f}%, "
             f"5h {usage['session_pct']:.1f}%."
         )
@@ -574,7 +574,7 @@ def cli(argv):
     if "--status" in argv:
         usage = get_usage(cfg)
         print("session-budget status")
-        print(f"  config: weekly ≤{cfg['weekly_pct_limit']}%, 5h ≤{cfg['session_pct_limit']}%, "
+        print(f"  config: weekly <={cfg['weekly_pct_limit']}%, 5h <={cfg['session_pct_limit']}%, "
               f"mode={cfg['mode']}, fail_policy={cfg['fail_policy']}")
         if usage:
             print(f"  plan usage now: weekly {usage['weekly_pct']:.1f}%, "
@@ -587,8 +587,8 @@ def cli(argv):
             base = st.get("baseline", {})
             grace = st.get("grace", {})
             override = st.get("limits_override", {})
-            ov = (f", override weekly ≤{override['weekly']:g}%" if "weekly" in override else "") + \
-                 (f", 5h ≤{override['session']:g}%" if "session" in override else "")
+            ov = (f", override weekly <={override['weekly']:g}%" if "weekly" in override else "") + \
+                 (f", 5h <={override['session']:g}%" if "session" in override else "")
             print(f"  session {sid}: baseline weekly {base.get('weekly_pct', '?')}%, "
                   f"5h {base.get('session_pct', '?')}%, "
                   f"grace +{grace.get('weekly', 0)}%/+{grace.get('session', 0)}%{ov}")
@@ -636,7 +636,7 @@ def cli(argv):
             st["grace"] = {"session": 0.0, "weekly": 0.0}
             st["pending_ask"] = False
             _write_json(p, st)
-            shown = ", ".join(f"{k} ≤{v:g}%" for k, v in override.items())
+            shown = ", ".join(f"{k} <={v:g}%" for k, v in override.items())
             print(f"Session {os.path.basename(p)[:-5]}: budget set to {shown} "
                   f"(unset values use config defaults; grace reset).")
         return 0
@@ -653,7 +653,19 @@ def cli(argv):
 # Entry point
 # ----------------------------------------------------------------------------
 
+def _force_utf8_stdio():
+    """Windows consoles often default to cp1252, which crashes on printing
+    non-ASCII. Reconfigure stdio to UTF-8 with replacement so the script
+    never dies on encoding (equivalent to PYTHONIOENCODING=utf-8)."""
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except Exception:
+            pass
+
+
 def main():
+    _force_utf8_stdio()
     if len(sys.argv) > 1:
         sys.exit(cli(sys.argv[1:]))
 
