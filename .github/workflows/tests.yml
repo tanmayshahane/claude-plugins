@@ -1,0 +1,22 @@
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate manifests
+        run: |
+          python3 -m json.tool .claude-plugin/marketplace.json > /dev/null
+          python3 -m json.tool plugins/session-budget/.claude-plugin/plugin.json > /dev/null
+          python3 -m json.tool plugins/session-budget/hooks/hooks.json > /dev/null
+      - name: Run scenario tests (26 checks)
+        run: |
+          mkdir -p /tmp/fake-project && cd /tmp/fake-project
+          CLAUDE_PLUGIN_ROOT="$GITHUB_WORKSPACE/plugins/session-budget" \
+            bash "$GITHUB_WORKSPACE/plugins/session-budget/scripts/test_session_budget.sh"

@@ -1,0 +1,13 @@
+{
+  "name": "session-budget",
+  "version": "1.1.0",
+  "description": "Per-session usage budgets for Claude Code: cap each session's share of your weekly quota and 5-hour window, pause and ask at the limit, and hand off context cleanly if you decline. Deterministic hook enforcement — the agent can never raise its own budget.",
+  "author": {
+    "name": "Tanmay Shahane",
+    "url": "https://github.com/tanmayshahane"
+  },
+  "homepage": "https://github.com/tanmayshahane/claude-plugins/tree/main/plugins/session-budget",
+  "repository": "https://github.com/tanmayshahane/claude-plugins",
+  "license": "MIT",
+  "keywords": ["usage", "budget", "quota", "limits", "hooks", "governance", "agents"]
+}

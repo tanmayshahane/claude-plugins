@@ -1,0 +1,31 @@
+{
+  "name": "tanmayshahane-plugins",
+  "owner": {
+    "name": "Tanmay Shahane",
+    "url": "https://github.com/tanmayshahane"
+  },
+  "metadata": {
+    "description": "Claude Code plugins by Tanmay Shahane",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "session-budget",
+      "source": "./plugins/session-budget",
+      "description": "Per-session usage budgets: cap each agent session's share of your weekly quota and 5-hour window, pause and ask at the limit, hand off context cleanly. Deterministic hook enforcement \u2014 agents can never raise their own budget.",
+      "version": "1.1.0",
+      "author": {
+        "name": "Tanmay Shahane"
+      },
+      "license": "MIT",
+      "category": "governance",
+      "keywords": [
+        "usage",
+        "budget",
+        "quota",
+        "limits"
+      ],
+      "homepage": "https://github.com/tanmayshahane/claude-plugins/tree/main/plugins/session-budget"
+    }
+  ]
+}
