@@ -29,7 +29,9 @@ Claude Code's permission prompt for explicit human approval.
 Install at **user scope** (the default) to apply it globally across all your
 projects, or project scope to enforce it for all collaborators on one repo.
 Requires `python3` on PATH (standard library only, no dependencies). On
-Windows, ensure `python3` resolves.
+Windows, ensure `python3` resolves. The script forces UTF-8 output and
+uses ASCII-only CLI text, so legacy cp1252 consoles work without
+`PYTHONIOENCODING` workarounds (fixed in 1.1.1).
 
 Start a new session and you'll see:
 `[session-budget] Budget active for this session: ...`

@@ -112,7 +112,7 @@ check "custom 2% budget trips at 3% consumed" "$OUT" '"permissionDecision": "ask
 
 echo "== 14. CLI: --status and --continue =="
 OUT=$(python3 "$GUARD" --status)
-check "--status prints config" "$OUT" "weekly ≤"
+check "--status prints config" "$OUT" "weekly <="
 OUT=$(python3 "$GUARD" --continue 10)
 check "--continue extends budget" "$OUT" "Extended"
 OUT=$(SESSION_BUDGET_WEEKLY_PCT=2 hook PreToolUse 6 33 '"tool_name":"Read","tool_input":{"file_path":"a.ts"}')
@@ -124,7 +124,7 @@ SID="story-a" hook SessionStart 5 30 >/dev/null
 sleep 0.05
 SID="story-b"; hook SessionStart 5 30 >/dev/null
 OUT=$(python3 "$GUARD" --set weekly=5)
-check "--set targets most recent session (story-b)" "$OUT" "story-b: budget set to weekly ≤5%"
+check "--set targets most recent session (story-b)" "$OUT" "story-b: budget set to weekly <=5%"
 OUT=$(hook PreToolUse 6 36 '"tool_name":"Read","tool_input":{"file_path":"a.ts"}')
 check "story-b trips at its own 5% budget (consumed 6)" "$OUT" '"permissionDecision": "ask"'
 SID="story-a"
