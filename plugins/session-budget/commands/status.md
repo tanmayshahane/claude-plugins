@@ -1,14 +1,18 @@
 ---
 description: Show this session's usage budget, consumption so far, and live plan usage
-allowed-tools: Bash
+allowed-tools: Bash(python3 *session_budget.py --status*)
+model: haiku
 ---
 
-Run this command and report the output to the user in a short, readable form:
+Run exactly this command:
 
 ```bash
 python3 "${CLAUDE_PLUGIN_ROOT}/scripts/session_budget.py" --status
 ```
 
-Summarize: the configured budget (weekly % and 5-hour-window %), how much this
-session has consumed against each, any grace extensions granted, and current
-overall plan usage. Do not modify any session-budget files.
+Then relay its output to the user verbatim in a code block, with at most one
+short sentence of framing. Do not analyze, interpret, or expand on it. Do not
+run any other commands or modify any files.
+
+(Tip for the user: running the same command in a regular terminal shows this
+with zero token usage.)
